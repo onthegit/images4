@@ -80,3 +80,19 @@ func SaveToJPG(img *image.RGBA, path string, quality int) {
 		jpeg.Encode(destFile, img, &jpeg.Options{Quality: quality})
 	}
 }
+
+func OpenAsIcon(path string) (*IconT, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	img, _, err := image.Decode(file)
+	if err != nil {
+		return nil, err
+	}
+
+	icon := Icon(img)
+	return &icon, nil
+}
